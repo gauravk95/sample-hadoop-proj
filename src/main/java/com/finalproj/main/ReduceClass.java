@@ -54,7 +54,8 @@ public class ReduceClass extends Reducer<IntWritable, RecordHolder, Text, NullWr
 			
 				
 		//TODO: Merge not working properly, FIX it
-		RecordHolder mergedRec = Merger.merge(partRecord);
+		ParallelMerger merger = new ParallelMerger(partRecord);
+		RecordHolder mergedRec = merger.merge();
 		
 		System.out.println("\n***************************"+mergedRec.toString()+"\n*****************************************");
 		
