@@ -15,8 +15,8 @@ import com.google.common.collect.Lists;
 
 /************************************************************************
  * Reduce class which is executed after the map class and takes
- * key(word) and corresponding values, sums all the values and write the
- * word along with the corresponding total occurrences in the output
+ * key(word) and corresponding values, merges the values
+ * and writes to the output
  * 
  * @author Gaurav Kumar
  *************************************************************************/

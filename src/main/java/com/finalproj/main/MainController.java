@@ -13,7 +13,7 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 /*****************************************************************
- * The entry point for the WordCount example,
+ * The entry point for the SmartSort program,
  * which setup the Hadoop job with Map and Reduce Class
  * 
  * @author Gaurav Kumar

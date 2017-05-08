@@ -13,7 +13,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 /**************************************************************************************
  * Map Class which extends MaReduce.Mapper class
- * Map is passed a single line at a time, it splits the line based on space
+ * Map is passed a N lines at a time, it splits the line based o delem
  * and generated the token which are output by map with value as one to be consumed
  * by reduce class
  * @author Gaurav Kumar
