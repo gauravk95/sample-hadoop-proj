@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /*****************************************
  * Merges Multiple Record Holder into one
@@ -17,7 +18,7 @@ public class ParallelMerger {
 	
 	private List<RecordHolder> list;
 	
-	private int startIndex=0,endIndex=0;
+	private int threadCount=0,initialSize;
 	private boolean jobDone = false;
 	
 	 private ExecutorService executor;
@@ -33,18 +34,30 @@ public class ParallelMerger {
 	
 	RecordHolder finalSor = null;
 	
-		startIndex = 0;
-		endIndex = list.size();
+		initialSize = list.size();
 		
 		//initially create N/2 merger threads
-		initMerger();
+		//initMerger();
 		
-		//repeat the task until only one record is left and the executor is terminated
-		while(list.size()!=1&&!executor.isTerminated())
+		//repeat the task until only one record is left 
+		while(threadCount!=(initialSize-1))
 		{
-								
+			
+				createMergerThread();
+					
 		}
 		
+		//shutdown the executor once all the threads for merge is assigned
+			executor.shutdown();
+		
+		//wait for all threads to finish execution
+		try {
+		  executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+		} catch (InterruptedException e) {
+		  
+		}
+			  
+			
 		finalSor = list.get(0);
 		
 		return finalSor;
@@ -59,18 +72,18 @@ public class ParallelMerger {
 		//only if there are 2 or more elements in the list to merge
 		if((list.size())>=2)
 		{
-			int size = list.size();				
-			for(int i = 0; i<size; i+=2)
+			int size = list.size();	
+			
+			for(int i = 0; i<(size-1); i+=2)
 			{
 				//ensure that pairs are only used to assign threads
 				//get 2 consecutive records
 				RecordHolder r1 = (RecordHolder) list.get(i);
 				RecordHolder r2 = (RecordHolder) list.get(i+1);
 				
-				Runnable worker = new MergerThread(r1.getMultipleRows(),r2.getMultipleRows());  
+				Runnable worker = new MergerThread(r1.getMultipleRows(),r2.getMultipleRows(),i);  
 	            executor.execute(worker);
-	            list.remove(i);
-				list.remove(i);
+	          
 			}
 			
 		
@@ -81,36 +94,43 @@ public class ParallelMerger {
 	private void createMergerThread()
 	{
 	
-		int i = list.size()-2;
 		//only if there are 2 or more elements in the list to merge
 				if((list.size())>=2)
 				{
-					
+								
 					//ensure that pairs are only used to assign threads
 					//get 2 consecutive records
-					RecordHolder r1 = (RecordHolder) list.get(i);
-					RecordHolder r2 = (RecordHolder) list.get(i+1);
+					RecordHolder r1 = (RecordHolder) list.get(0);
+					RecordHolder r2 = (RecordHolder) list.get(1);
 					
-					Runnable worker = new MergerThread(r1.getMultipleRows(),r2.getMultipleRows());  
-			        executor.execute(worker);
-			        
-			        list.remove(i);
-					list.remove(i);
-				}
 
+			        list.remove(0);
+			        list.remove(0);
+			        
+			        //counts the number of threads    	 
+			        threadCount++;
+			        
+					Runnable worker = new MergerThread(r1.getMultipleRows(),r2.getMultipleRows(),0);  
+			        executor.execute(worker);
+			   
+				}
+				
 	}
 
 
-	class MergerThread implements Runnable {  
+	class MergerThread implements Runnable { 
 	    private ArrayList<RecordRow> ar1;
 	    private ArrayList<RecordRow> ar2;
+	    private int pos;
 	    
-	    public MergerThread(ArrayList<RecordRow> ar1,ArrayList<RecordRow> ar2){  
+	    public MergerThread(ArrayList<RecordRow> ar1,ArrayList<RecordRow> ar2,int pos){  
 	        this.ar1 = ar1;
 	        this.ar2 = ar2;
+	        this.pos = pos;
 	    } 
 	    
 	     public void run() {  
+	       	        
 	        System.out.println("\n----------------------------------------------\n"+Thread.currentThread().getName()+" INFO: Started Execution, Merge Started");  
 	        
 	        mergeRecords();               
@@ -163,8 +183,7 @@ public class ParallelMerger {
 				tHolder.setMultipleRows(tempAr);
 				
 				list.add(tHolder);
-					
-							
+										
 				//once the previous merge is finished, create a new merger
 				createMergerThread();
 	     	

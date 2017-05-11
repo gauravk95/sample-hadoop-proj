@@ -110,13 +110,13 @@ public String toString() {
 	@Override
 	public void readFields(DataInput arg0) throws IOException {
 		// TODO Auto-generated method stub
-		setMultipleRows(arg0.readUTF(),MapClass.ROW_DELM,MapClass.COL_DELM);
+		setMultipleRows(arg0.readLine(),MapClass.ROW_DELM,MapClass.COL_DELM);
 	}
 
 	@Override
 	public void write(DataOutput arg0) throws IOException {
 		// TODO Auto-generated method stub
-		arg0.writeUTF(this.toString());
+		arg0.writeChars(this.toString());
 	}
 	
 }
