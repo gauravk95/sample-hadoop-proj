@@ -7,6 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import com.finalproj.main.CustomMapReduceClass.MapClass;
+import com.finalproj.main.DataModels.RecordHolder;
+import com.finalproj.main.DataModels.RecordRow;
 
 /*****************************************
  * Merges Multiple Record Holder into one

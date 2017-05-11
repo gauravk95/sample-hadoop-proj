@@ -15,6 +15,7 @@ import org.apache.hadoop.util.ToolRunner;
 import com.finalproj.main.CustomMapReduceClass.MapClass;
 import com.finalproj.main.CustomMapReduceClass.ReduceClass;
 import com.finalproj.main.CustomRecordReader.CustomFileInputFormat;
+import com.finalproj.main.DataModels.RecordHolder;
 import com.finalproj.main.TestMapReduceClass.*;
 
 /*****************************************************************

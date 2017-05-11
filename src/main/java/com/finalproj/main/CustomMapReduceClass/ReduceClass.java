@@ -12,8 +12,8 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import com.finalproj.main.ParallelMerger;
-import com.finalproj.main.RecordHolder;
-import com.finalproj.main.RecordRow;
+import com.finalproj.main.DataModels.RecordHolder;
+import com.finalproj.main.DataModels.RecordRow;
 import com.google.common.collect.Lists;
 
 /************************************************************************

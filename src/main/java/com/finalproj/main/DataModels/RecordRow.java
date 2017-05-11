@@ -1,4 +1,4 @@
-package com.finalproj.main;
+package com.finalproj.main.DataModels;
 
 import com.finalproj.main.CustomMapReduceClass.MapClass;
 

@@ -11,7 +11,7 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-import com.finalproj.main.RecordHolder;
+import com.finalproj.main.DataModels.RecordHolder;
 
 /**************************************************************************************
  * Map Class which extends MaReduce.Mapper class
