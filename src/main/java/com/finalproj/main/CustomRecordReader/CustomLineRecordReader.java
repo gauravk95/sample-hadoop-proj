@@ -1,4 +1,4 @@
-package com.finalproj.main;
+package com.finalproj.main.CustomRecordReader;
 
 import java.io.IOException;
 
@@ -19,7 +19,7 @@ import org.apache.hadoop.util.LineReader;
 public class CustomLineRecordReader extends RecordReader<LongWritable, Text> {
 
 //number of lines per record
-private final int N_LINES = 100;
+private final int N_LINES = 20;
 
 private long start;
 private long pos;

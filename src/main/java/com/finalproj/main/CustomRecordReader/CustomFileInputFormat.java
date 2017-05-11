@@ -1,4 +1,4 @@
-package com.finalproj.main;
+package com.finalproj.main.CustomRecordReader;
 
 import java.io.IOException;
 

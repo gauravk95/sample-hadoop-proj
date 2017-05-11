@@ -12,6 +12,11 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+import com.finalproj.main.CustomMapReduceClass.MapClass;
+import com.finalproj.main.CustomMapReduceClass.ReduceClass;
+import com.finalproj.main.CustomRecordReader.CustomFileInputFormat;
+import com.finalproj.main.TestMapReduceClass.*;
+
 /*****************************************************************
  * The entry point for the SmartSort program,
  * which setup the Hadoop job with Map and Reduce Class
@@ -35,16 +40,35 @@ public class MainController extends Configured implements Tool{
 	 * @param args Arguments passed in main function
 	 */
 	public int run(String[] args) throws Exception {
-		if (args.length != 2) {
-			System.err.printf("Usage: %s needs two arguments <input> <output> files\n",
+		
+		int runMode = 1;
+
+		if(args.length != 2 && args.length!=3)
+		{
+			System.err.printf("Usage: %s needs two/three arguments <input_file> <output_file> <options> \n\n \tOPTIONS: \n\t\t-t : Open in Test Mode\n\n\n ",
 					getClass().getSimpleName());
 			return -1;
 		}
-	
+		
+		if(args.length==3)
+		{
+			if(args[2].compareTo("-t")==0)
+			{
+				runMode = 0;
+			}
+			else
+			{
+				System.err.printf("Usage: %s needs two/three arguments <input_file> <output_file> <options> \n\n \tOPTIONS: \n\t\t-t : Open in Test Mode\n \n\n ",
+						getClass().getSimpleName());
+				return -1;
+			}
+		}	
+		
+			
 		//Initialize the Hadoop job and set the jar as well as the name of the Job
 		Job job = new Job();
 		job.setJarByClass(MainController.class);
-		job.setJobName("WordCounter");
+		job.setJobName("SmartSort");
 		
 		//Add input and output file paths to job based on the arguments passed
 		CustomFileInputFormat.addInputPath(job, new Path(args[0]));
@@ -58,20 +82,41 @@ public class MainController extends Configured implements Tool{
 		
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 	
-		job.setMapOutputKeyClass(IntWritable.class);
-		job.setMapOutputValueClass(RecordHolder.class);
-		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(NullWritable.class);
-		job.setOutputFormatClass(TextOutputFormat.class);
 		
-		/*job.setPartitionerClass(RecordPartitioner.class);
-		job.setGroupingComparatorClass(RecordHelperGroupingComparator.class);*/
+		if(runMode==1)
+		{
+			//normal mode config
+			job.setMapOutputKeyClass(IntWritable.class);
+			job.setMapOutputValueClass(RecordHolder.class);
+			job.setOutputKeyClass(Text.class);
+			job.setOutputValueClass(NullWritable.class);
+			job.setOutputFormatClass(TextOutputFormat.class);
+			job.setMapperClass(MapClass.class);
+
+			job.setNumReduceTasks(1);
+			job.setReducerClass(ReduceClass.class);
+		}
+		else
+		{
+			//test mode config
+			job.setMapOutputKeyClass(Text.class);
+			job.setMapOutputValueClass(Text.class);
+			job.setOutputKeyClass(Text.class);
+			job.setOutputValueClass(NullWritable.class);
+			job.setOutputFormatClass(TextOutputFormat.class);
+			
+			/*job.setPartitionerClass(RecordPartitioner.class);
+			job.setGroupingComparatorClass(RecordHelperGroupingComparator.class);*/
+			
+			//Set the MapClass and ReduceClass in the job
+			job.setMapperClass(TestMapClass.class);
+			
+
+			job.setNumReduceTasks(1);
+			job.setReducerClass(TestReduceClass.class);
+		}
 		
-		//Set the MapClass and ReduceClass in the job
-		job.setMapperClass(MapClass.class);
 		
-		job.setNumReduceTasks(1);
-		job.setReducerClass(ReduceClass.class);
 	
 		//Wait for the job to complete and print if the job was successful or not
 		int returnValue = job.waitForCompletion(true) ? 0:1;

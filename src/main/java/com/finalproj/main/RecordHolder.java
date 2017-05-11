@@ -9,6 +9,8 @@ import java.util.Comparator;
 
 import org.apache.hadoop.io.Writable;
 
+import com.finalproj.main.CustomMapReduceClass.MapClass;
+
 /**********************************************************************************
  * Holds N records/rows as a list of RecordRow, consists methods to  operate on them 
  * @author Gaurav Kumar
@@ -107,16 +109,20 @@ public String toString() {
 			
 		}
 
+	 /**
+	  * TODO: UTF has a limit on the size approx 64k bytes, use something that has larger range
+	  */
 	@Override
 	public void readFields(DataInput arg0) throws IOException {
 		// TODO Auto-generated method stub
-		setMultipleRows(arg0.readLine(),MapClass.ROW_DELM,MapClass.COL_DELM);
+		
+		setMultipleRows(arg0.readUTF(),MapClass.ROW_DELM,MapClass.COL_DELM);
 	}
 
 	@Override
 	public void write(DataOutput arg0) throws IOException {
 		// TODO Auto-generated method stub
-		arg0.writeChars(this.toString());
+		arg0.writeUTF(this.toString());
 	}
 	
 }

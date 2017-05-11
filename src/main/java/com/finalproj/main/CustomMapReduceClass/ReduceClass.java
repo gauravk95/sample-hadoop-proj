@@ -1,4 +1,4 @@
-package com.finalproj.main;
+package com.finalproj.main.CustomMapReduceClass;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +11,9 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
+import com.finalproj.main.ParallelMerger;
+import com.finalproj.main.RecordHolder;
+import com.finalproj.main.RecordRow;
 import com.google.common.collect.Lists;
 
 /************************************************************************
@@ -32,15 +35,6 @@ public class ReduceClass extends Reducer<IntWritable, RecordHolder, Text, NullWr
 	protected void reduce(IntWritable key, Iterable<RecordHolder> values,
 			Context context)
 			throws IOException, InterruptedException {
-	/*
-		int sum = 0;
-		Iterator<IntWritable> valuesIt = values.iterator();
-		
-		while(valuesIt.hasNext()){
-			sum = sum + valuesIt.next().get();
-		}
-		*/
-		int k = 0;
 		
 		//change iterable to Collection
 		ArrayList<RecordHolder> partRecord = new ArrayList<RecordHolder>();
@@ -48,7 +42,8 @@ public class ReduceClass extends Reducer<IntWritable, RecordHolder, Text, NullWr
 		        	RecordHolder row = new RecordHolder();
 		        	row.setMultipleRows(value.getMultipleRows());
 		        	partRecord.add(row);
-		        	k++;
+		        	
+		        	System.out.println("-------------------------------------------\n"+row.toString());
 		        	
 			}
 			
@@ -57,9 +52,11 @@ public class ReduceClass extends Reducer<IntWritable, RecordHolder, Text, NullWr
 		ParallelMerger merger = new ParallelMerger(partRecord);
 		RecordHolder mergedRec = merger.merge();
 		
+		System.out.println("\n############################################\nMerging Completed!");
 		//System.out.println("\n***************************"+mergedRec.toString()+"\n*****************************************");
 		
-		context.write(new Text(mergedRec.toString()), nullRec);
+		for(RecordRow temp : mergedRec.getMultipleRows())
+			context.write(new Text(temp.toString()), nullRec);
 		
 		
 	}	

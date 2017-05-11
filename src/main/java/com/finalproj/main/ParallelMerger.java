@@ -6,12 +6,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import com.finalproj.main.CustomMapReduceClass.MapClass;
+
 /*****************************************
  * Merges Multiple Record Holder into one
  * @author Gaurav Kumar
  *****************************************/
 
-//TODO: ABove merger is not working properly...fix it
+//TODO: Optimize the solution
 
 public class ParallelMerger {
 	
@@ -42,7 +44,6 @@ public class ParallelMerger {
 		//repeat the task until only one record is left 
 		while(threadCount!=(initialSize-1))
 		{
-			
 				createMergerThread();
 					
 		}

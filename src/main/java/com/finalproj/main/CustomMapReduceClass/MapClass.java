@@ -1,4 +1,4 @@
-package com.finalproj.main;
+package com.finalproj.main.CustomMapReduceClass;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +10,8 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
+
+import com.finalproj.main.RecordHolder;
 
 /**************************************************************************************
  * Map Class which extends MaReduce.Mapper class

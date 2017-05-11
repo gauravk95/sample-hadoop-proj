@@ -1,5 +1,6 @@
 package com.finalproj.main;
 
+import com.finalproj.main.CustomMapReduceClass.MapClass;
 
 /*********************************************************************************
  * Holds a single Row as an array of columns, consists methods to operate on them
