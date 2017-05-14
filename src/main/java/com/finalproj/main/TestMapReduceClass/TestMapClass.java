@@ -26,7 +26,7 @@ import com.finalproj.main.DataModels.RecordRow;
  *************************************************************************************/
 public class TestMapClass extends Mapper<LongWritable, Text, Text, Text>{
 	 
-    public static final int COL_INDEX = 1;
+    public static final int COL_INDEX = 2;
     
     public static final String COL_DELM = ",";
     public static final String ROW_DELM = "\n";

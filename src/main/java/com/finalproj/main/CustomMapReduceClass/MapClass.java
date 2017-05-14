@@ -11,6 +11,7 @@ import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
+import com.finalproj.main.DisplayController;
 import com.finalproj.main.DataModels.RecordHolder;
 
 /**************************************************************************************
@@ -20,13 +21,22 @@ import com.finalproj.main.DataModels.RecordHolder;
  * by reduce class
  * @author Gaurav Kumar
  *************************************************************************************/
-public class MapClass extends Mapper<LongWritable, Text, IntWritable, RecordHolder>{
+public class MapClass extends Mapper<LongWritable, Text, NullWritable, NullWritable>{
 	 
-    public static final int COL_INDEX = 1;
+	public static final int DATA_TYPE_INT = 1;
+	public static final int DATA_TYPE_FLOAT = 2;
+	public static final int DATA_TYPE_STRING = 0;
+	
+    public static int COL_INDEX = 0;
+    
+    //2 for String, by default
+    public static int DATA_TYPE_INDEX = 2;
     
     public static final String COL_DELM = ",";
     public static final String ROW_DELM = "\n";
     
+    public static String records;
+        
     /**
      * map function of Mapper parent class takes a line of text at a time
      * splits to tokens and passes to the context as word along with value as one
@@ -36,20 +46,9 @@ public class MapClass extends Mapper<LongWritable, Text, IntWritable, RecordHold
 			Context context)
 			throws IOException, InterruptedException {
 		
-		String record= value.toString();
-	
-		RecordHolder temp = new RecordHolder(record,ROW_DELM,COL_DELM);	
-		
-		//sorts the records
-		temp.sortRecords(COL_INDEX);
-		
-		System.out.println("##########################################################\n"+temp.toString());
-		
-			context.write(new IntWritable(1),temp);
-				
+		records= value.toString();
+        	
 	}
-	
-	
 
 
 }

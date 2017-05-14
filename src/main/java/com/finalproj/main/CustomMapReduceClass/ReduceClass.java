@@ -42,9 +42,6 @@ public class ReduceClass extends Reducer<IntWritable, RecordHolder, Text, NullWr
 		        	RecordHolder row = new RecordHolder();
 		        	row.setMultipleRows(value.getMultipleRows());
 		        	partRecord.add(row);
-		        	
-		        	System.out.println("-------------------------------------------\n"+row.toString());
-		        	
 			}
 			
 				

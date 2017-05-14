@@ -11,12 +11,14 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
+import org.jfree.ui.RefineryUtilities;
 
 import com.finalproj.main.CustomMapReduceClass.MapClass;
 import com.finalproj.main.CustomMapReduceClass.ReduceClass;
 import com.finalproj.main.CustomRecordReader.CustomFileInputFormat;
 import com.finalproj.main.DataModels.RecordHolder;
 import com.finalproj.main.TestMapReduceClass.*;
+
 
 /*****************************************************************
  * The entry point for the SmartSort program,
@@ -26,15 +28,17 @@ import com.finalproj.main.TestMapReduceClass.*;
  ******************************************************************/
 public class MainController extends Configured implements Tool{
 	
+	public static int algorithmType = 0;
 	/**
 	 * Main function which calls the run method and passes the args using ToolRunner
 	 * @param args Two arguments input and output file paths
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception{
-		int exitCode = ToolRunner.run(new MainController(), args);
-		System.exit(exitCode);
+		int exitCode = ToolRunner.run(new MainController(), args);  
+		//System.exit(exitCode);
 	}
+	
  
 	/**
 	 * Run method which schedules the Hadoop Job
@@ -42,24 +46,31 @@ public class MainController extends Configured implements Tool{
 	 */
 	public int run(String[] args) throws Exception {
 		
-		int runMode = 1;
-
-		if(args.length != 2 && args.length!=3)
+		if(args.length != 2)
 		{
-			System.err.printf("Usage: %s needs two/three arguments <input_file> <output_file> <options> \n\n \tOPTIONS: \n\t\t-t : Open in Test Mode\n\n\n ",
+			System.out.println("Args Size: "+args.length);
+			System.err.printf("\nUsage: %s needs two/three arguments <input_file> <output_file> <options> \n\n \tOPTIONS: \n\t\t-t : Open in Test Mode\n\n\n ",
 					getClass().getSimpleName());
 			return -1;
 		}
 		
 		if(args.length==3)
 		{
-			if(args[2].compareTo("-t")==0)
+			if(args[2].compareTo("-i")==0)
 			{
-				runMode = 0;
+				algorithmType = 1;
+			}
+			else if(args[2].compareTo("-m")==0)
+			{
+				algorithmType = 2;
+			}
+			else if(args[2].compareTo("-q")==0)
+			{
+				algorithmType = 3;
 			}
 			else
 			{
-				System.err.printf("Usage: %s needs two/three arguments <input_file> <output_file> <options> \n\n \tOPTIONS: \n\t\t-t : Open in Test Mode\n \n\n ",
+				System.err.printf("\n*****Usage: %s needs two/three arguments <input_file> <output_file> <options> \n\n \tOPTIONS: \n\t\t-t : Open in Test Mode\n \n\n ",
 						getClass().getSimpleName());
 				return -1;
 			}
@@ -82,50 +93,31 @@ public class MainController extends Configured implements Tool{
 	      hdfs.delete(new Path(args[1]), true);
 		
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
-	
 		
-		if(runMode==1)
-		{
 			//normal mode config
-			job.setMapOutputKeyClass(IntWritable.class);
-			job.setMapOutputValueClass(RecordHolder.class);
+			job.setMapOutputKeyClass(NullWritable.class);
+			job.setMapOutputValueClass(NullWritable.class);
 			job.setOutputKeyClass(Text.class);
 			job.setOutputValueClass(NullWritable.class);
 			job.setOutputFormatClass(TextOutputFormat.class);
 			job.setMapperClass(MapClass.class);
 
-			job.setNumReduceTasks(1);
-			job.setReducerClass(ReduceClass.class);
-		}
-		else
-		{
-			//test mode config
-			job.setMapOutputKeyClass(Text.class);
-			job.setMapOutputValueClass(Text.class);
-			job.setOutputKeyClass(Text.class);
-			job.setOutputValueClass(NullWritable.class);
-			job.setOutputFormatClass(TextOutputFormat.class);
-			
-			/*job.setPartitionerClass(RecordPartitioner.class);
-			job.setGroupingComparatorClass(RecordHelperGroupingComparator.class);*/
-			
-			//Set the MapClass and ReduceClass in the job
-			job.setMapperClass(TestMapClass.class);
-			
-
-			job.setNumReduceTasks(1);
-			job.setReducerClass(TestReduceClass.class);
-		}
-		
-		
+			job.setNumReduceTasks(0);
+			//job.setReducerClass(ReduceClass.class);
+	
 	
 		//Wait for the job to complete and print if the job was successful or not
 		int returnValue = job.waitForCompletion(true) ? 0:1;
 		
 		if(job.isSuccessful()) {
-			System.out.println("Job was successful");
+			System.out.println("Map Job was successful");
+			
+			
+			DisplayController display = new DisplayController();  
+			display.initSortController();
+			
 		} else if(!job.isSuccessful()) {
-			System.out.println("Job was not successful");			
+			System.out.println("Map Job was not successful...Exiting Program...!");			
 		}
 		
 		return returnValue;

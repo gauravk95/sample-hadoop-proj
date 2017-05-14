@@ -23,15 +23,14 @@ public class ParallelMerger {
 	private List<RecordHolder> list;
 	
 	private int threadCount=0,initialSize;
-	private boolean jobDone = false;
 	
 	 private ExecutorService executor;
 	
 	public ParallelMerger(List<RecordHolder> list)
 	{
 		this.list = list;
-		int cores = 5;
-		executor= Executors.newFixedThreadPool(5);
+		int cores = 8;
+		executor= Executors.newFixedThreadPool(cores);
 	}
 	
 	public RecordHolder merge(){
@@ -47,7 +46,7 @@ public class ParallelMerger {
 		while(threadCount!=(initialSize-1))
 		{
 				createMergerThread();
-					
+				//System.out.println("Running("+threadCount+","+initialSize+")");	
 		}
 		
 		//shutdown the executor once all the threads for merge is assigned
@@ -65,33 +64,6 @@ public class ParallelMerger {
 		
 		return finalSor;
 	
-	}
-	
-	
-	private void initMerger() {
-		// TODO Auto-generated method stub
-	
-		
-		//only if there are 2 or more elements in the list to merge
-		if((list.size())>=2)
-		{
-			int size = list.size();	
-			
-			for(int i = 0; i<(size-1); i+=2)
-			{
-				//ensure that pairs are only used to assign threads
-				//get 2 consecutive records
-				RecordHolder r1 = (RecordHolder) list.get(i);
-				RecordHolder r2 = (RecordHolder) list.get(i+1);
-				
-				Runnable worker = new MergerThread(r1.getMultipleRows(),r2.getMultipleRows(),i);  
-	            executor.execute(worker);
-	          
-			}
-			
-		
-		}
-		
 	}
 	
 	private void createMergerThread()

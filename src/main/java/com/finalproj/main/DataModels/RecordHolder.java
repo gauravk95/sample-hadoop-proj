@@ -9,7 +9,10 @@ import java.util.Comparator;
 
 import org.apache.hadoop.io.Writable;
 
+import com.finalproj.main.MainController;
+import com.finalproj.main.SortingController;
 import com.finalproj.main.CustomMapReduceClass.MapClass;
+import com.finalproj.main.SortingAlgorithm.InsertionSort;
 
 /**********************************************************************************
  * Holds N records/rows as a list of RecordRow, consists methods to  operate on them 
@@ -20,6 +23,8 @@ public class RecordHolder implements Writable{
 	
 	private ArrayList<RecordRow> rows;
 	
+	private RecordRow colNames;
+	
 	public RecordHolder()
 	{
 		
@@ -29,7 +34,11 @@ public class RecordHolder implements Writable{
 		String rowslist[] = trows.split(rowRegex);
 		this.rows = new ArrayList<RecordRow>();
 		
-		for(int i =0;i<rowslist.length;i++)
+		//initialize the column name list,always string
+		this.colNames = new RecordRow(rowslist[0],colRegex,true);
+		
+		//initialize the actual data
+		for(int i =1;i<rowslist.length;i++)
 		{
 			this.rows.add(new RecordRow(rowslist[i],colRegex));
 		}
@@ -79,7 +88,15 @@ public class RecordHolder implements Writable{
 	}
 	
 	
-	/* Returns the string representation of this multiple Row*/
+	public RecordRow getColNames() {
+		return colNames;
+	}
+
+	public void setColNames(RecordRow colNames) {
+		this.colNames = colNames;
+	}
+
+/* Returns the string representation of this multiple Row*/
 @Override
 public String toString() {
 		 
@@ -97,17 +114,61 @@ public String toString() {
 	return temp;
 }
 	 
-	 public void sortRecords(final int colIndex)
+	 public void sortRecords(int code)
 		{
+			
+		 //TODO: assign appropriate algorithm to appropriate cases
+		 
+		 switch(code)
+		 {
+		 case SortingController.TIM_SORT:
 			//sort the values using comparator
-			Collections.sort(rows,new Comparator<RecordRow>() {
-			    @Override
-			    public int compare(RecordRow a, RecordRow b) {
-			        return a.getSingleCol(colIndex).compareTo(b.getSingleCol(colIndex));
-			    }
-			});
+				Collections.sort(rows,new Comparator<RecordRow>() {
+				    @Override
+				    public int compare(RecordRow a, RecordRow b) {
+				        return a.getSingleCol(MapClass.COL_INDEX).compareTo(b.getSingleCol(MapClass.COL_INDEX));
+				    }
+				});
+			 break;
+			 
+		 case SortingController.INSERTION_SORT:
+			  InsertionSort.sort(rows);
+			 break;
+			 
+		 case SortingController.MERGE_SORT:
+			  InsertionSort.sort(rows);
+			 break;
+			 
+		 case SortingController.QUICK_SORT:
+			  InsertionSort.sort(rows);
+			 break;
+			 
+		 case SortingController.HEAP_SORT:
+			  InsertionSort.sort(rows);
+			 break;
+			 
+		 case SortingController.SHELL_SORT:
+			  InsertionSort.sort(rows);
+			 break;
+			 
+		 case SortingController.COUNTING_SORT:
+			 InsertionSort.sort(rows);
+			 break;
+			 
+		 case SortingController.RADIX_SORT:
+			InsertionSort.sort(rows);
+			 break;
+			 
+		 case SortingController.ADAPTIVE_SORT:
+			  InsertionSort.sort(rows);
+			 break;
+			 
+		 }
+		 
+		 
 			
 		}
+
 
 	 /**
 	  * TODO: UTF has a limit on the size approx 64k bytes, use something that has larger range

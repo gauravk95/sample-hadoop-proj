@@ -9,11 +9,99 @@ import com.finalproj.main.CustomMapReduceClass.MapClass;
 public class RecordRow{
 	
 	private String[] cols;
+	private Integer compInteger;
+	private Float compFloat;
+	private String compString;
 	
-	public RecordRow(String cols,String colRegex) {
+	
+	public RecordRow(String cols,String colRegex,boolean firstline) {
+		
+		if(firstline)
 		this.cols = cols.split(colRegex);
 	}
 	
+	public RecordRow(String cols,String colRegex) {
+		this.cols = cols.split(colRegex);
+		
+		if(MapClass.DATA_TYPE_INDEX==MapClass.DATA_TYPE_INT)
+		{
+			//integer
+			try{
+				this.compInteger = Integer.parseInt(this.cols[MapClass.COL_INDEX]);
+				
+			}catch(NumberFormatException e)
+			{
+				System.err.println("ERROR: Cannot convert String into Integer, please choose String datatype");
+			}
+		}
+		else if(MapClass.DATA_TYPE_INDEX==MapClass.DATA_TYPE_FLOAT)
+		{
+			try{
+			//float
+					this.compFloat = Float.parseFloat(this.cols[MapClass.COL_INDEX]);
+					
+				}catch(NumberFormatException e)
+				{
+					System.err.println("ERROR: Cannot convert String into Integer, please choose String datatype");
+				}
+		}
+		else
+		{
+			//string
+			this.compString = this.cols[MapClass.COL_INDEX];
+		}
+	}
+	
+	
+	
+	public String[] getCols() {
+		return cols;
+	}
+
+
+
+	public void setCols(String[] cols) {
+		this.cols = cols;
+	}
+
+
+
+	public Integer getCompInteger() {
+		return compInteger;
+	}
+
+
+
+	public void setCompInteger(Integer compInteger) {
+		this.compInteger = compInteger;
+	}
+
+
+
+	public Float getCompFloat() {
+		return compFloat;
+	}
+
+
+
+	public void setCompFloat(Float compFloat) {
+		this.compFloat = compFloat;
+	}
+
+
+
+	public String getCompString() {
+		return compString;
+	}
+
+
+
+	public void setCompString(String compString) {
+		this.compString = compString;
+	}
+
+
+
 	public String[] getMultipleCols() {
 		return cols;
 	}

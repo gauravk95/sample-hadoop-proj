@@ -19,7 +19,7 @@ import org.apache.hadoop.util.LineReader;
 public class CustomLineRecordReader extends RecordReader<LongWritable, Text> {
 
 //number of lines per record
-private final int N_LINES = 20;
+private final int N_LINES =100000;
 
 private long start;
 private long pos;

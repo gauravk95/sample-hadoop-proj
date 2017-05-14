@@ -42,7 +42,8 @@ public class TestReduceClass extends Reducer<Text, Text, Text, NullWritable>{
 		Iterator<Text> valuesIt = values.iterator();
 		
 		while(valuesIt.hasNext()){
-			context.write(new Text(valuesIt.toString()), nullRec);
+			context.write(valuesIt.next(),nullRec);
+			
 		}
 				
 		
