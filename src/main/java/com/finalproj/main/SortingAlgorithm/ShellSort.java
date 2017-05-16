@@ -1,24 +1,27 @@
 package com.finalproj.main.SortingAlgorithm;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 public class ShellSort {
 	
-	/************************INTEGER************************/
-	public Integer[] sort(Integer[] sequence) 
+	public static <T>  void sort(ArrayList<T> row,Comparator<? super T> c) 
     {
-        int increment = sequence.length / 2;
+        int increment = row.size() / 2;
         while (increment > 0) 
         {
-            for (int i = increment; i < sequence.length; i++) 
+            for (int i = increment; i < row.size(); i++) 
             {
                 int j = i;
-                int temp = sequence[i];
-                while (j >= increment && sequence[j - increment] > temp) 
+                T temp = row.get(i);
+                while (j >= increment && (c.compare(row.get(j - increment), temp) > 0)) 
                 {
-                    sequence[j] = sequence[j - increment];
+                    row.set(j,row.get(j - increment));
                     j = j - increment;
                 }
-                sequence[j] = temp;
+                row.set(j, temp);
             }
+            
             if (increment == 2)
                 increment = 1;
             else
@@ -26,63 +29,19 @@ public class ShellSort {
  
         }
         
-        return sequence;
-    }
-	
-	
-	/************************FLOAT************************/
-	public Float[] sort(Float[] sequence) 
-    {
-        int increment = sequence.length / 2;
-        while (increment > 0) 
-        {
-            for (int i = increment; i < sequence.length; i++) 
-            {
-                int j = i;
-                Float temp = sequence[i];
-                while (j >= increment && sequence[j - increment] > temp) 
-                {
-                    sequence[j] = sequence[j - increment];
-                    j = j - increment;
-                }
-                sequence[j] = temp;
-            }
-            if (increment == 2)
-                increment = 1;
-            else
-                increment *= (5.0 / 11);
- 
-        }
+        //System.out.println("\n****************************SORTED RECORD****************************");
+        //printRecords(row);		
         
-        return sequence;
     }
-	
-	
-	/************************STRING************************/
-	public String[] sort(String[] sequence) 
-    {
-        int increment = sequence.length / 2;
-        while (increment > 0) 
-        {
-            for (int i = increment; i < sequence.length; i++) 
-            {
-                int j = i;
-                String temp = sequence[i];
-                while (j >= increment && (sequence[j - increment].compareTo(temp) > 0)) 
-                {
-                    sequence[j] = sequence[j - increment];
-                    j = j - increment;
-                }
-                sequence[j] = temp;
-            }
-            if (increment == 2)
-                increment = 1;
-            else
-                increment *= (5.0 / 11);
- 
-        }
-        
-        return sequence;
-    }
+	 
+		public static <T> void printRecords(ArrayList<T> row)
+		{
+			
+			for(int i=0;i<row.size();i++)
+			{
+				System.out.println(row.get(i).toString());
+			}
+		}     
+			
 
 }

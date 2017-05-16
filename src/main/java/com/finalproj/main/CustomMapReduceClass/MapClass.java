@@ -30,7 +30,7 @@ public class MapClass extends Mapper<LongWritable, Text, NullWritable, NullWrita
     public static int COL_INDEX = 0;
     
     //2 for String, by default
-    public static int DATA_TYPE_INDEX = 2;
+    public static int DATA_TYPE_INDEX = 0;
     
     public static final String COL_DELM = ",";
     public static final String ROW_DELM = "\n";

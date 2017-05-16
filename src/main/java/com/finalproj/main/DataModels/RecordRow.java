@@ -20,30 +20,19 @@ public class RecordRow{
 		this.cols = cols.split(colRegex);
 	}
 	
-	public RecordRow(String cols,String colRegex) {
+	public RecordRow(String cols,String colRegex) throws NumberFormatException {
 		this.cols = cols.split(colRegex);
 		
 		if(MapClass.DATA_TYPE_INDEX==MapClass.DATA_TYPE_INT)
 		{
 			//integer
-			try{
 				this.compInteger = Integer.parseInt(this.cols[MapClass.COL_INDEX]);
 				
-			}catch(NumberFormatException e)
-			{
-				System.err.println("ERROR: Cannot convert String into Integer, please choose String datatype");
-			}
 		}
 		else if(MapClass.DATA_TYPE_INDEX==MapClass.DATA_TYPE_FLOAT)
 		{
-			try{
-			//float
-					this.compFloat = Float.parseFloat(this.cols[MapClass.COL_INDEX]);
+				this.compFloat = Float.parseFloat(this.cols[MapClass.COL_INDEX]);
 					
-				}catch(NumberFormatException e)
-				{
-					System.err.println("ERROR: Cannot convert String into Integer, please choose String datatype");
-				}
 		}
 		else
 		{

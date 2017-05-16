@@ -39,6 +39,15 @@ public class SortingController {
 		
 		for(int i=SortingController.INSERTION_SORT;i<=SortingController.ADAPTIVE_SORT;i++)
 		{
+			//skip radix and counting sort for float and string type
+			if((MapClass.DATA_TYPE_INDEX==MapClass.DATA_TYPE_FLOAT||MapClass.DATA_TYPE_INDEX==MapClass.DATA_TYPE_STRING)&&
+					(i==RADIX_SORT||i==COUNTING_SORT))
+			{	
+				System.out.println("INFO: Skipping "+getSortingAlgorithmName(i)+" as its not applicable for Float/String Datatype");
+				execTimes.add(0L);
+				continue;	
+			}
+			
 			long nexectime = 0;
 			 System.out.println("INFO: Using "+getSortingAlgorithmName(i)+" to sort  data");
 			
