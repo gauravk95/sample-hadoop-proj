@@ -32,10 +32,13 @@ public class MapClass extends Mapper<LongWritable, Text, NullWritable, NullWrita
     //2 for String, by default
     public static int DATA_TYPE_INDEX = 0;
     
+    //1 means ascending, -1 means descending
+    public static int SORT_DIRECTION = 1;
+    
     public static final String COL_DELM = ",";
     public static final String ROW_DELM = "\n";
     
-    public static String records;
+    public static String records="";
         
     /**
      * map function of Mapper parent class takes a line of text at a time

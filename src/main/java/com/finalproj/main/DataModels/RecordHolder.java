@@ -42,6 +42,7 @@ public class RecordHolder implements Writable{
 		
 		//initialize the column name list,always string
 		this.colNames = new RecordRow(rowslist[0],colRegex,true);
+	
 		try
 		{
 		//initialize the actual data
@@ -148,7 +149,7 @@ public String toString() {
 					    	else if(a.getCompInteger()<b.getCompInteger())
 					    		res = -1;
 					    	
-					        return res;
+					        return MapClass.SORT_DIRECTION*res;
 					    }
 					};
 				}
@@ -166,7 +167,7 @@ public String toString() {
 					    	else if(a.getCompFloat()<b.getCompFloat())
 					    		res = -1;
 					    	
-					        return res;
+					        return MapClass.SORT_DIRECTION*res;
 					    }
 					};
 				}
@@ -176,7 +177,7 @@ public String toString() {
 					comparator = new Comparator<RecordRow>() {
 					    @Override
 					    public int compare(RecordRow a, RecordRow b) {
-					        return a.getCompString().compareTo(b.getCompString());
+					        return MapClass.SORT_DIRECTION*(a.getCompString().compareTo(b.getCompString()));
 					    }
 					};
 					

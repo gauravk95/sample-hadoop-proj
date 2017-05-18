@@ -17,7 +17,7 @@ public class SortingController {
 	public final static int RADIX_SORT = 8 ;
 	public final static int ADAPTIVE_SORT = 9 ;
 	
-	public final static int N_RUNS= 1;
+	public final static int N_RUNS= 1000;
 	
 	private RecordHolder mainRecords;
 	
@@ -28,6 +28,11 @@ public class SortingController {
 	{
 		System.out.println("INFO: Initaializing Sorting Controller");
 		this.execTimes = new ArrayList<Long>();		
+		this.mainRecords = new RecordHolder(MapClass.records,MapClass.ROW_DELM,MapClass.COL_DELM);
+		for(int i=SortingController.INSERTION_SORT;i<=SortingController.ADAPTIVE_SORT;i++)
+		{
+			execTimes.add(0L);
+		}
 	}
 	
 	public void startSorting()

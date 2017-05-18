@@ -3,6 +3,7 @@ package com.finalproj.main.SortingAlgorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.finalproj.main.CustomMapReduceClass.MapClass;
 import com.finalproj.main.DataModels.RecordRow;
 
 public class RadixSort {
@@ -32,9 +33,18 @@ public class RadixSort {
  
         // Change count[i] so that count[i] now contains
         // actual position of this digit in output[]
-        for (i = 1; i < 10; i++)
-            count[i] += count[i - 1];
- 
+        if(MapClass.SORT_DIRECTION==1)
+        {
+        	//ascending order
+	        for (i = 1; i < 10; i++)
+	            count[i] += count[i - 1];
+        }
+        else
+        {
+        	//descending order
+	        for (i = 8; i >=0 ; i--)
+	            count[i] += count[i+1];
+        }
         // Build the output array
         for (i = n - 1; i >= 0; i--)
         {
@@ -63,8 +73,8 @@ public class RadixSort {
         
         
         //print the elements
-      //System.out.println("\n****************************SORTED RECORD****************************");
-      //printRecords(arr);
+       //System.out.println("\n****************************SORTED RECORD****************************");
+       //printRecords(arr);
     }
  
     public static <T> void printRecords(ArrayList<T> row)

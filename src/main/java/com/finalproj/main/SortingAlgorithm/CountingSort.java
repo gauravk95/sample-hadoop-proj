@@ -3,6 +3,7 @@ package com.finalproj.main.SortingAlgorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.finalproj.main.CustomMapReduceClass.MapClass;
 import com.finalproj.main.DataModels.RecordRow;
 
 
@@ -37,12 +38,24 @@ public class CountingSort {
 	        }
 	 
 	        int[] count = new int[range];
+	       
 	        /** make count/frequency array for each element **/
 	        for (int i = 0; i < N; i++)
 	            count[arr.get(i).getCompInteger() - min]++;
-	        /** modify count so that positions in final array is obtained **/
-	        for (int i = 1; i < range; i++)
-	            count[i] += count[i - 1];
+	       
+	        
+	        
+	        if(MapClass.SORT_DIRECTION==1)
+	        { 
+		        /** modify count so that positions in final array is obtained **/
+		        for (int i = 1; i < range; i++)
+		            count[i] += count[i - 1];
+	        }
+	        else
+	        {  /** modify count so that positions in final array is obtained **/
+		        for (int i = range-2; i>=0; i--)
+		            count[i] += count[i+1];	
+	        }
 	        /** modify original array **/
 	        int j = 0;
 	        for (int i = 0; i < arr.size(); i++)
@@ -55,7 +68,7 @@ public class CountingSort {
 	        newarr.addAll(Arrays.asList(tempArr));
 	        
 	        //System.out.println("\n****************************SORTED RECORD****************************");
-	       // printRecords(newarr);
+	        //printRecords(newarr);
 	        
 	        return newarr;
 	    

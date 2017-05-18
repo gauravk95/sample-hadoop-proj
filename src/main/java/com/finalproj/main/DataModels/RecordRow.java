@@ -16,8 +16,12 @@ public class RecordRow{
 	
 	public RecordRow(String cols,String colRegex,boolean firstline) {
 		
-		if(firstline)
+		if(firstline && cols!=null)
 		this.cols = cols.split(colRegex);
+		else
+		{
+			this.cols = new String[]{"Default Col"};
+		}
 	}
 	
 	public RecordRow(String cols,String colRegex) throws NumberFormatException {
