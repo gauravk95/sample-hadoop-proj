@@ -66,7 +66,7 @@ public class DisplayController {
 		   
 		   System.out.println("INFO: Preparing GUI Components");
 	      mainFrame = new JFrame("Adaptive Sort");
-	      mainFrame.setSize(800,600);
+	      mainFrame.setSize(800,550);
 	      
 	      panel = new JPanel();
 	      panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -91,7 +91,9 @@ public class DisplayController {
 	      chosenFileText = new Label("No file selected...");
 
 	      //set the dropdown list
-	      colComboBox = new JComboBox(colNames);
+	      colComboBox = new JComboBox();
+	      DefaultComboBoxModel model = new DefaultComboBoxModel( colNames );
+	      colComboBox.setModel( model );
 	      typeComboBox = new JComboBox(dataTypeList);
 	      orderComboBox = new JComboBox(orderTypeList);
 	      
@@ -136,14 +138,24 @@ public class DisplayController {
 		               try {
 							MapClass.records = FileHandler.readInputFileString(file.getAbsolutePath());
 							
+							//generate new sorting controller  initialize with new column names
+							sController= new SortingController();
+							
 							//TODO: update the record column selector one the file is read to be selected to sort
 							//FIXEME: the below implementation is not forking properly
-							colComboBox.removeAllItems();
+							 // getting exiting combo box model
+					        DefaultComboBoxModel model = (DefaultComboBoxModel) colComboBox.getModel();
+					        // removing old data
+					        model.removeAllElements();
 
+					        //System.out.println(sController.getColumnNames().toString());
 							for(String str : sController.getColumnNames()) {
-							   colComboBox.addItem(str);
+								model.addElement(str);
 							}
 							
+							 // setting model with new data
+					        colComboBox.setModel(model);
+					        
 							progressText.setText("NOTE: Successfully read Input File...!" );
 						} catch (NumberFormatException e1) {
 							// TODO Auto-generated catch block
